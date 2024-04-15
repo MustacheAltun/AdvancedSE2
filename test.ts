@@ -776,6 +776,34 @@ class OptionFunctor {
 // };
 // ```
 
+// import React from "react";
+
+// export type Widget<o> = {
+//   run: (onOutput: (_: o) => void) => JSX.Element;
+//   map: <o2>(f: (_: o) => o2) => Widget<o2>;
+//   wrapHTML: (f: (_: JSX.Element) => JSX.Element) => Widget<o>;
+// };
+
+// export const Widget = {
+//   Default: <o,>(actual: (onOutput: (_: o) => void) => JSX.Element): Widget<o> => ({
+//     run: actual,
+//     map: function <o2>(this: Widget<o>, f: (_: o) => o2): Widget<o2> {
+//           return Widget.Default(onOutput => this.run(x => onOutput(f(x)));
+//         );
+//       },
+//     wrapHTML: function (this: Widget<o>, f: (_: JSX.Element) => JSX.Element): Widget<o> {
+//         return Widget.Default(onOutput => f(this.run(onOutput))
+//       );
+//     }
+//   }),
+//   any: <o,>(ws: Array<Widget<o>>): Widget<o> => 
+//     Widget.Default<o>(onOutput => 
+//       <>{
+//         ws.map(w => w.run(onOutput))
+//       }</>
+//     )
+// };
+
 
 // Complete the following type definitions
 // ```ts
@@ -804,3 +832,28 @@ class OptionFunctor {
 //     }
 // )
 // ```
+
+// export type Coroutine<context, state, events, result> = {
+//   ([context, deltaT, events]: [context, DeltaT, Array<events>]): CoroutineStep<
+//     context,
+//     state,
+//     events,
+//     result
+//   >;
+
+//   export type CoroutineStep<context, state, events, result> = {
+//     newState: BasicUpdater<state> | undefined;
+//   } & (
+//     | { kind: "result"; result: result }
+//     | {
+//         kind: "then";
+//         p: Coroutine<context, state, events, any>;
+//         k: BasicFun<any, Coroutine<context, state, events, result>>;
+//       }
+//     | { kind: "yield"; next: Coroutine<context, state, events, result>> }
+//     | {
+//         kind: "waiting";
+//         msLeft: number;
+//         next: Coroutine<context, state, events, result>;
+//       }
+//   )
